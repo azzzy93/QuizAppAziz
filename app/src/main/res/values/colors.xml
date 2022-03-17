@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text_color_gray">#A9A9A9</color>
     <color name="text_color_blue">#3F3356</color>
+    <color name="seek_bar_color">#9A0ADF</color>
 </resources>

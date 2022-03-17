@@ -1,12 +1,10 @@
 package kg.geektech.quizappaziz.presentation.activity
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.navigation.NavigationBarView
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.databinding.ActivityMainBinding
@@ -22,7 +20,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initActionBar()
         initNavController()
+    }
+
+    private fun initActionBar() {
+        setSupportActionBar(binding.toolbar)
     }
 
     private fun initNavController() {
