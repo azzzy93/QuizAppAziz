@@ -1,19 +1,23 @@
 package kg.geektech.quizappaziz.presentation.settings
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import kg.geektech.quizappaziz.R
+import kg.geektech.quizappaziz.databinding.FragmentSettingsBinding
+import kg.geektech.quizappaziz.domain.common.base.BaseFragment
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+    override fun bind(): FragmentSettingsBinding {
+        return FragmentSettingsBinding.inflate(layoutInflater)
     }
+
+    override fun setupListeners() {
+    }
+
+    override fun setupObservers() {
+    }
+
+    override fun setupUi() {
+        requireActivity().title = getString(R.string.settings)
+    }
+
 }

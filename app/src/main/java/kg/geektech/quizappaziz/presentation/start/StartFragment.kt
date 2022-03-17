@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.databinding.FragmentStartBinding
 import kg.geektech.quizappaziz.domain.common.base.BaseFragment
 import kg.geektech.quizappaziz.domain.start.entity.CategoryEntity
@@ -57,6 +58,6 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     }
 
     override fun setupUi() {
-        requireActivity().title = "Quiz"
+        requireActivity().title = getString(R.string.quiz)
     }
 }

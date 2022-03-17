@@ -7,4 +7,8 @@
     <string name="category">Category</string>
     <string name="difficulty">Difficulty</string>
     <string name="start">Start</string>
+    <string name="quiz">Quiz</string>
+    <string name="clear_history">Clear History</string>
+    <string name="change_language">Change Language</string>
+    <string name="change_theme">Change Theme</string>
 </resources>
