@@ -1,7 +1,8 @@
 package kg.geektech.quizappaziz.presentation.start
 
-import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -33,6 +34,10 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
             override fun onStopTrackingTouch(p0: SeekBar?) {}
 
         })
+        binding.btnStart.setOnClickListener {
+            val category = binding.spinnerCategory.selectedItem as CategoryEntity
+            Toast.makeText(requireContext(), category.id.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun setupObservers() {
@@ -45,7 +50,10 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     }
 
     private fun handleCategory(list: List<CategoryEntity>) {
-        Log.e("Aziz", "handleCategory: $list")
+        val adapter: ArrayAdapter<CategoryEntity> =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, list)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCategory.adapter = adapter
     }
 
     override fun setupUi() {

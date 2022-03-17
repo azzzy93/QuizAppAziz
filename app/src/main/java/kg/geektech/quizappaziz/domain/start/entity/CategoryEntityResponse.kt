@@ -11,4 +11,8 @@ data class CategoryEntityResponse(
 data class CategoryEntity(
     val id: Int,
     val name: String
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
