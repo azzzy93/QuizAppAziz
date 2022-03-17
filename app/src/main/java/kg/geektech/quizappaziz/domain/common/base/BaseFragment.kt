@@ -2,6 +2,7 @@ package kg.geektech.quizappaziz.domain.common.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -23,6 +24,8 @@ abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
         setupUi()
         setupObservers()
         setupListeners()
@@ -33,4 +36,15 @@ abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
     abstract fun setupObservers()
 
     abstract fun setupUi()
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                requireActivity().onBackPressed()
+                true
+            }
+            else ->
+                super.onOptionsItemSelected(item)
+        }
+    }
 }

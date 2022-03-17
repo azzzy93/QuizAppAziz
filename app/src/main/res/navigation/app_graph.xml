@@ -23,4 +23,10 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="kg.geektech.quizappaziz.presentation.game.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" />
+
 </navigation>

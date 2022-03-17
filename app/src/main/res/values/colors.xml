@@ -11,4 +11,5 @@
     <color name="text_color_gray">#A9A9A9</color>
     <color name="text_color_blue">#3F3356</color>
     <color name="seek_bar_color">#9A0ADF</color>
+    <color name="blue_for_answer">#6979F8</color>
 </resources>

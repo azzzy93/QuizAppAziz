@@ -1,5 +1,6 @@
 package kg.geektech.quizappaziz.presentation.start
 
+import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Toast
@@ -7,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.databinding.FragmentStartBinding
@@ -36,9 +38,30 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
 
         })
         binding.btnStart.setOnClickListener {
-            val category = binding.spinnerCategory.selectedItem as CategoryEntity
-            Toast.makeText(requireContext(), category.id.toString(), Toast.LENGTH_SHORT).show()
+            openGameFragment()
         }
+    }
+
+    private fun openGameFragment() {
+        val category = binding.spinnerCategory.selectedItem as CategoryEntity
+        val categoryId = category.id
+        val questionAmount = binding.tvQuestionsAmountValue.text.toString().toInt()
+        val difficulty = binding.spinnerDifficulty.selectedItem.toString()
+
+        val text =
+            "Question amount: $questionAmount,\nCategory: $categoryId,\nDifficulty: $difficulty"
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+
+        val bundle = Bundle()
+        bundle.apply {
+            putInt(CATEGORY_ID, categoryId)
+            putInt(QUESTIONS_AMOUNT, questionAmount)
+            putString(DIFFICULTY, difficulty)
+        }
+
+        val navController =
+            Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
+        navController.navigate(R.id.gameFragment, bundle)
     }
 
     override fun setupObservers() {
@@ -51,13 +74,45 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     }
 
     private fun handleCategory(list: List<CategoryEntity>) {
+        val listWithAnyCategory: ArrayList<CategoryEntity> = ArrayList()
+        listWithAnyCategory.add(CategoryEntity(-1, "Any Category"))
+        list.forEach {
+            listWithAnyCategory.add(it)
+        }
         val adapter: ArrayAdapter<CategoryEntity> =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, list)
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                listWithAnyCategory
+            )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerCategory.adapter = adapter
     }
 
     override fun setupUi() {
         requireActivity().title = getString(R.string.quiz)
+        setupSpinnerDifficulty()
+    }
+
+    private fun setupSpinnerDifficulty() {
+        val listDifficulty: ArrayList<String> = ArrayList()
+        listDifficulty.add("Any Difficulty")
+        listDifficulty.add("Easy")
+        listDifficulty.add("Medium")
+        listDifficulty.add("Hard")
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                listDifficulty
+            )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerDifficulty.adapter = adapter
+    }
+
+    companion object {
+        const val CATEGORY_ID = "CATEGORY_ID"
+        const val QUESTIONS_AMOUNT = "QUESTIONS_AMOUNT"
+        const val DIFFICULTY = "DIFFICULTY"
     }
 }
