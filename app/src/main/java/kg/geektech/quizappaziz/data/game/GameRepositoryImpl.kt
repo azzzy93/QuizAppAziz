@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(private val gameApi: GameApi) : GameRepository {
+
     override suspend fun getQsts(
         amount: Int,
         categoryId: Int,
@@ -16,6 +17,56 @@ class GameRepositoryImpl @Inject constructor(private val gameApi: GameApi) : Gam
     ): Flow<BaseResult<List<QuestionsEntity>, String>> {
         return flow {
             val response = gameApi.getQsts(amount, categoryId, difficulty)
+            if (response.isSuccessful) {
+                val body = response.body()
+                body?.results?.let {
+                    emit(BaseResult.Success(it))
+                }
+            } else {
+                emit(BaseResult.Error(response.message()))
+            }
+        }
+    }
+
+    override suspend fun getQsts(
+        amount: Int,
+        difficulty: String
+    ): Flow<BaseResult<List<QuestionsEntity>, String>> {
+        return flow {
+            val response = gameApi.getQsts(amount, difficulty)
+            if (response.isSuccessful) {
+                val body = response.body()
+                body?.results?.let {
+                    emit(BaseResult.Success(it))
+                }
+            } else {
+                emit(BaseResult.Error(response.message()))
+            }
+        }
+    }
+
+    override suspend fun getQsts(
+        amount: Int,
+        categoryId: Int
+    ): Flow<BaseResult<List<QuestionsEntity>, String>> {
+        return flow {
+            val response = gameApi.getQsts(amount, categoryId)
+            if (response.isSuccessful) {
+                val body = response.body()
+                body?.results?.let {
+                    emit(BaseResult.Success(it))
+                }
+            } else {
+                emit(BaseResult.Error(response.message()))
+            }
+        }
+    }
+
+    override suspend fun getQsts(
+        amount: Int
+    ): Flow<BaseResult<List<QuestionsEntity>, String>> {
+        return flow {
+            val response = gameApi.getQsts(amount)
             if (response.isSuccessful) {
                 val body = response.body()
                 body?.results?.let {

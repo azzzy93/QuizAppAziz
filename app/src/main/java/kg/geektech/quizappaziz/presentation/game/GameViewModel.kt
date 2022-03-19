@@ -50,6 +50,86 @@ class GameViewModel @Inject constructor(private val getQstsUseCase: GetQstsUseCa
         }
     }
 
+    fun fetchQsts(
+        amount: Int,
+        difficulty: String
+    ) {
+        viewModelScope.launch {
+            getQstsUseCase.invoke(amount, difficulty)
+                .onStart {
+                    setLoading()
+                }
+                .catch {
+                    hideLoading()
+                    showToast(it.message ?: "Error")
+                }
+                .collect {
+                    hideLoading()
+                    when (it) {
+                        is BaseResult.Success -> {
+                            _qstsList.value = it.data
+                        }
+                        is BaseResult.Error -> {
+                            showToast(it.errorMsg)
+                        }
+                    }
+                }
+        }
+    }
+
+    fun fetchQsts(
+        amount: Int,
+        categoryId: Int
+    ) {
+        viewModelScope.launch {
+            getQstsUseCase.invoke(amount, categoryId)
+                .onStart {
+                    setLoading()
+                }
+                .catch {
+                    hideLoading()
+                    showToast(it.message ?: "Error")
+                }
+                .collect {
+                    hideLoading()
+                    when (it) {
+                        is BaseResult.Success -> {
+                            _qstsList.value = it.data
+                        }
+                        is BaseResult.Error -> {
+                            showToast(it.errorMsg)
+                        }
+                    }
+                }
+        }
+    }
+
+    fun fetchQsts(
+        amount: Int
+    ) {
+        viewModelScope.launch {
+            getQstsUseCase.invoke(amount)
+                .onStart {
+                    setLoading()
+                }
+                .catch {
+                    hideLoading()
+                    showToast(it.message ?: "Error")
+                }
+                .collect {
+                    hideLoading()
+                    when (it) {
+                        is BaseResult.Success -> {
+                            _qstsList.value = it.data
+                        }
+                        is BaseResult.Error -> {
+                            showToast(it.errorMsg)
+                        }
+                    }
+                }
+        }
+    }
+
     private fun showToast(message: String) {
         _state.value = GameFragmentState.ShowToast(message)
     }

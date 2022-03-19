@@ -13,4 +13,18 @@ interface GameRepository {
         difficulty: String
     ): Flow<BaseResult<List<QuestionsEntity>, String>>
 
+    suspend fun getQsts(
+        amount: Int,
+        difficulty: String
+    ): Flow<BaseResult<List<QuestionsEntity>, String>>
+
+    suspend fun getQsts(
+        amount: Int,
+        categoryId: Int
+    ): Flow<BaseResult<List<QuestionsEntity>, String>>
+
+    suspend fun getQsts(
+        amount: Int
+    ): Flow<BaseResult<List<QuestionsEntity>, String>>
+
 }

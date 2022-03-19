@@ -51,9 +51,21 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
     }
 
     override fun setupObservers() {
-        viewModel.fetchQsts(maxCount, categoryId, difficulty)
+        if (categoryId == -1 && difficulty != "any difficulty") {
+            viewModel.fetchQsts(amount = maxCount, difficulty = difficulty)
+            Log.e("Aziz", "without category")
+        } else if (difficulty == "any difficulty" && categoryId != -1) {
+            viewModel.fetchQsts(amount = maxCount, categoryId = categoryId)
+            Log.e("Aziz", "without difficulty")
+        } else if (categoryId == -1 && difficulty == "any difficulty") {
+            viewModel.fetchQsts(amount = maxCount)
+            Log.e("Aziz", "without category and difficulty")
+        } else {
+            viewModel.fetchQsts(amount = maxCount, categoryId = categoryId, difficulty = difficulty)
+            Log.e("Aziz", "with ALL")
+        }
+
         viewModel.qstsList.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
-            Log.e("Aziz", "setupObservers: $it")
             adapter.submitList(it)
         }.launchIn(lifecycleScope)
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {

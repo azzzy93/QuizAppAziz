@@ -16,4 +16,24 @@ class GetQstsUseCase @Inject constructor(private val repository: GameRepository)
         return repository.getQsts(amount, categoryId, difficulty)
     }
 
+    suspend fun invoke(
+        amount: Int,
+        difficulty: String
+    ): Flow<BaseResult<List<QuestionsEntity>, String>> {
+        return repository.getQsts(amount, difficulty)
+    }
+
+    suspend fun invoke(
+        amount: Int,
+        categoryId: Int
+    ): Flow<BaseResult<List<QuestionsEntity>, String>> {
+        return repository.getQsts(amount, categoryId)
+    }
+
+    suspend fun invoke(
+        amount: Int
+    ): Flow<BaseResult<List<QuestionsEntity>, String>> {
+        return repository.getQsts(amount)
+    }
+
 }
