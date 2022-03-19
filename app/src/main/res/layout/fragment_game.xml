@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="45dp"
     tools:context=".presentation.game.GameFragment">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -28,25 +27,15 @@
         app:layout_constraintTop_toBottomOf="@id/progress_linear"
         tools:text="5/10" />
 
-    <TextView
-        android:id="@+id/tv_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_progress_counter"
-        tools:text="What is the largest city and commercial capital of Sri Lanka?" />
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_game"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
         app:layout_constraintBottom_toTopOf="@id/btn_skip"
-        app:layout_constraintTop_toBottomOf="@id/tv_question"
-        tools:listitem="@layout/item_for_answer" />
+        app:layout_constraintTop_toBottomOf="@id/tv_progress_counter"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_for_boolean"
+        tools:orientation="horizontal" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_skip"

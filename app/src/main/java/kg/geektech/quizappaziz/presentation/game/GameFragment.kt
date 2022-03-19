@@ -1,12 +1,15 @@
 package kg.geektech.quizappaziz.presentation.game
 
+import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.core.BaseFragment
 import kg.geektech.quizappaziz.databinding.FragmentGameBinding
@@ -21,6 +24,22 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
     private var categoryId = 0
     private var difficulty = ""
     private var currentCount = 1
+    private lateinit var adapter: GameAdapter
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        adapter = GameAdapter()
+        binding.rvGame.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = this@GameFragment.adapter
+        }
+    }
 
     private val viewModel: GameViewModel by viewModels()
 
@@ -35,6 +54,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
         viewModel.fetchQsts(maxCount, categoryId, difficulty)
         viewModel.qstsList.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             Log.e("Aziz", "setupObservers: $it")
+            adapter.submitList(it)
         }.launchIn(lifecycleScope)
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             handleState(it)
