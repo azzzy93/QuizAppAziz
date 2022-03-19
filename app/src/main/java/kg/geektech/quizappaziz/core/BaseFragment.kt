@@ -1,4 +1,4 @@
-package kg.geektech.quizappaziz.domain.common.base
+package kg.geektech.quizappaziz.core
 
 import android.os.Bundle
 import android.view.LayoutInflater

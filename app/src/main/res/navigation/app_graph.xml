@@ -9,7 +9,11 @@
         android:id="@+id/startFragment"
         android:name="kg.geektech.quizappaziz.presentation.start.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" />
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/historyFragment"

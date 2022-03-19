@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.databinding.FragmentHistoryBinding
-import kg.geektech.quizappaziz.domain.common.base.BaseFragment
+import kg.geektech.quizappaziz.core.BaseFragment
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 

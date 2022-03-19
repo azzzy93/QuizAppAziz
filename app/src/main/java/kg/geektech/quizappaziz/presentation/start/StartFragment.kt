@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.databinding.FragmentStartBinding
-import kg.geektech.quizappaziz.domain.common.base.BaseFragment
+import kg.geektech.quizappaziz.core.BaseFragment
 import kg.geektech.quizappaziz.domain.start.entity.CategoryEntity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,11 +46,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
         val category = binding.spinnerCategory.selectedItem as CategoryEntity
         val categoryId = category.id
         val questionAmount = binding.tvQuestionsAmountValue.text.toString().toInt()
-        val difficulty = binding.spinnerDifficulty.selectedItem.toString()
-
-        val text =
-            "Question amount: $questionAmount,\nCategory: $categoryId,\nDifficulty: $difficulty"
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+        val difficulty = binding.spinnerDifficulty.selectedItem.toString().lowercase()
 
         val bundle = Bundle()
         bundle.apply {
@@ -61,7 +57,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
 
         val navController =
             Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
-        navController.navigate(R.id.gameFragment, bundle)
+        navController.navigate(R.id.action_startFragment_to_gameFragment, bundle)
     }
 
     override fun setupObservers() {

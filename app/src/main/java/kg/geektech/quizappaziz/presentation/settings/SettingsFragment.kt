@@ -2,7 +2,7 @@ package kg.geektech.quizappaziz.presentation.settings
 
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.databinding.FragmentSettingsBinding
-import kg.geektech.quizappaziz.domain.common.base.BaseFragment
+import kg.geektech.quizappaziz.core.BaseFragment
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 

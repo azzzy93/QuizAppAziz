@@ -1,4 +1,4 @@
-package kg.geektech.quizappaziz.data.common
+package kg.geektech.quizappaziz.di
 
 import dagger.Module
 import dagger.Provides
