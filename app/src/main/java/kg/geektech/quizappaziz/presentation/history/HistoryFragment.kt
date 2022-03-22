@@ -40,12 +40,6 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         return FragmentHistoryBinding.inflate(layoutInflater)
     }
 
-    override fun setupListeners() {
-    }
-
-    override fun setupObservers() {
-    }
-
     override fun setupUi() {
         requireActivity().title = getString(R.string.history)
     }

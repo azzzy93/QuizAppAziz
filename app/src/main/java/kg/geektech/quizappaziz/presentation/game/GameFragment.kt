@@ -1,14 +1,20 @@
 package kg.geektech.quizappaziz.presentation.game
 
+import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.core.BaseFragment
 import kg.geektech.quizappaziz.databinding.FragmentGameBinding
 import kg.geektech.quizappaziz.presentation.start.StartFragment
@@ -22,10 +28,18 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
 
     private var questionAmount = 1
     private var categoryId = -1
+    private var categoryName = ""
     private var difficulty = ""
+    private var currentPosition = 0
+    private var correctAnswer = 0
     private val viewModel: GameViewModel by viewModels()
     private val adapter: GameAdapter by lazy {
         GameAdapter()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun bind(): FragmentGameBinding {
@@ -33,14 +47,48 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
     }
 
     override fun setupListeners() {
-        adapter.onItemClick = {
-            if (adapter.currentList.size-1 > it) {
-                lifecycleScope.launch {
-                    delay(2000)
-                    binding.rvGame.layoutManager?.scrollToPosition(1 + it)
-                    changeProgress(2 + it)
+        adapter.onItemClick = { pos, answer ->
+
+            currentPosition = pos + 1
+            correctAnswer += answer
+
+            lifecycleScope.launch {
+                delay(2000)
+                if (adapter.currentList.size - 1 == pos) {
+                    openResultFragment()
+                } else {
+                    binding.rvGame.layoutManager?.scrollToPosition(currentPosition)
                 }
             }
+
+        }
+    }
+
+    private fun openResultFragment() {
+        val bundle = Bundle()
+        val correctAnswers = "$correctAnswer/$questionAmount"
+        val resultPercent: Double = (correctAnswer.toDouble() / questionAmount.toDouble()) * 100
+        val result = "${resultPercent.toInt()}%"
+        bundle.apply {
+            putString(CATEGORY_NAME, categoryName)
+            putString(DIFFICULTY, difficulty)
+            putString(CORRECT_ANSWERS, correctAnswers)
+            putString(RESULT, result)
+        }
+        navigateFragment(R.id.action_gameFragment_to_resultFragment, bundle)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                if (currentPosition > 0) {
+                    currentPosition -= 1
+                    binding.rvGame.layoutManager?.scrollToPosition(currentPosition)
+                }
+                true
+            }
+            else ->
+                super.onOptionsItemSelected(item)
         }
     }
 
@@ -89,14 +137,14 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
         if (arguments != null) {
             categoryId = requireArguments().getInt(StartFragment.CATEGORY_ID)
             requireArguments().getString(StartFragment.CATEGORY_NAME)?.let {
-                requireActivity().title = it
+                categoryName = it
+                requireActivity().title = categoryName
             }
             questionAmount = requireArguments().getInt(StartFragment.QUESTIONS_AMOUNT)
             requireArguments().getString(StartFragment.DIFFICULTY)?.let {
                 difficulty = it
             }
         }
-        changeProgress(1)
         initRv()
     }
 
@@ -111,10 +159,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
         }
     }
 
-    private fun changeProgress(currentCount: Int) {
-        val count = "$currentCount/$questionAmount"
-        binding.tvProgressCounter.text = count
-        binding.progressLinear.max = questionAmount
-        binding.progressLinear.progress = currentCount
+    companion object {
+        const val CATEGORY_NAME = "CATEGORY_NAME"
+        const val DIFFICULTY = "DIFFICULTY"
+        const val CORRECT_ANSWERS = "CORRECT_ANSWERS"
+        const val RESULT = "RESULT"
     }
 }

@@ -2,11 +2,12 @@ package kg.geektech.quizappaziz.core
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
+import kg.geektech.quizappaziz.R
 
 abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
 
@@ -24,27 +25,27 @@ abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
 
         setupUi()
         setupObservers()
         setupListeners()
     }
 
-    abstract fun setupListeners()
+    open fun setupListeners() {}
 
-    abstract fun setupObservers()
+    open fun setupObservers() {}
 
-    abstract fun setupUi()
+    open fun setupUi() {}
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                requireActivity().onBackPressed()
-                true
-            }
-            else ->
-                super.onOptionsItemSelected(item)
+    protected fun navigateFragment(fragmentId: Int? = null, bundle: Bundle? = null) {
+        val navController =
+            Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
+        if (fragmentId != null && bundle != null) {
+            navController.navigate(fragmentId, bundle)
+        } else if (fragmentId != null && bundle == null) {
+            navController.navigate(fragmentId)
+        } else {
+            navController.navigateUp()
         }
     }
 }

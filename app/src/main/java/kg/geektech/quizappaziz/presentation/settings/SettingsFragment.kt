@@ -10,12 +10,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         return FragmentSettingsBinding.inflate(layoutInflater)
     }
 
-    override fun setupListeners() {
-    }
-
-    override fun setupObservers() {
-    }
-
     override fun setupUi() {
         requireActivity().title = getString(R.string.settings)
     }

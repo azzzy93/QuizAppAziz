@@ -1,13 +1,15 @@
 package kg.geektech.quizappaziz.presentation.start
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
+import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.core.BaseFragment
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.onEach
 class StartFragment : BaseFragment<FragmentStartBinding>() {
 
     private val viewModel: StartViewModel by viewModels()
+    private val listDifficulty = arrayListOf("Any Difficulty", "Easy", "Medium", "Hard")
 
     override fun bind(): FragmentStartBinding {
         return FragmentStartBinding.inflate(layoutInflater)
@@ -56,9 +59,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
             putString(DIFFICULTY, difficulty)
         }
 
-        val navController =
-            Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
-        navController.navigate(R.id.action_startFragment_to_gameFragment, bundle)
+        navigateFragment(R.id.action_startFragment_to_gameFragment, bundle)
     }
 
     override fun setupObservers() {
@@ -76,35 +77,25 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
         list.forEach {
             listWithAnyCategory.add(it)
         }
-        val adapter: ArrayAdapter<CategoryEntity> =
-            ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                listWithAnyCategory
-            )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerCategory.adapter = adapter
+
+        setupSpinner(listWithAnyCategory, binding.spinnerCategory)
     }
 
     override fun setupUi() {
         requireActivity().title = getString(R.string.quiz)
-        setupSpinnerDifficulty()
+        binding.tvQuestionsAmountValue.text = binding.seekBar.progress.toString()
+        setupSpinner(listDifficulty, binding.spinnerDifficulty)
     }
 
-    private fun setupSpinnerDifficulty() {
-        val listDifficulty: ArrayList<String> = ArrayList()
-        listDifficulty.add("Any Difficulty")
-        listDifficulty.add("Easy")
-        listDifficulty.add("Medium")
-        listDifficulty.add("Hard")
-        val adapter: ArrayAdapter<String> =
+    private fun setupSpinner(list: List<Any>, spinner: Spinner) {
+        val adapter =
             ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                listDifficulty
+                list
             )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerDifficulty.adapter = adapter
+        spinner.adapter = adapter
     }
 
     companion object {

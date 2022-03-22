@@ -34,13 +34,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:text="1"
         android:textColor="@color/text_color_blue"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_questions_amount"
         app:layout_constraintStart_toEndOf="@id/tv_questions_amount"
         app:layout_constraintTop_toTopOf="@id/tv_questions_amount"
-        tools:ignore="HardcodedText" />
+        tools:text="1" />
 
     <SeekBar
         android:id="@+id/seek_bar"
@@ -49,6 +48,7 @@
         android:layout_marginTop="15dp"
         android:max="50"
         android:min="1"
+        android:progress="10"
         android:progressTint="@color/seek_bar_color"
         android:thumbTint="@color/seek_bar_color"
         app:layout_constraintTop_toBottomOf="@id/tv_questions_amount"

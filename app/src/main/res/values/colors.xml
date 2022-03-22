@@ -14,4 +14,5 @@
     <color name="btn_answer_def">#6979F8</color>
     <color name="btn_answer_true">#046E09</color>
     <color name="btn_answer_false">#9A0437</color>
+    <color name="green_color_done">#4CE2A7</color>
 </resources>

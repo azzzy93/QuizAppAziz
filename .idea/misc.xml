@@ -8,12 +8,14 @@
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/bg_for_answer_enabled.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/bg_for_answer_false.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/bg_for_answer_true.xml" value="0.209" />
+        <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/ic_done.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/ic_splash_screen_logo.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/splash_screen.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/drawable/splash_screen_bg.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/fragment_game.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/fragment_history.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/fragment_result.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/fragment_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/fragment_start.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/QuizAppAziz/app/src/main/res/layout/item_for_answer.xml" value="0.25416666666666665" />

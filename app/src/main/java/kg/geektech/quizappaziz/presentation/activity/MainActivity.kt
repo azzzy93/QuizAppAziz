@@ -35,15 +35,14 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.startFragment ||
-                destination.id == R.id.historyFragment ||
-                destination.id == R.id.settingsFragment
-            ) {
-                binding.bottomNavigationView.isVisible = true
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            } else {
-                binding.bottomNavigationView.isVisible = false
+            binding.bottomNavigationView.isVisible = destination.id == R.id.startFragment ||
+                    destination.id == R.id.historyFragment ||
+                    destination.id == R.id.settingsFragment
+
+            if (destination.id == R.id.gameFragment) {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            } else {
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
             }
         }
     }
