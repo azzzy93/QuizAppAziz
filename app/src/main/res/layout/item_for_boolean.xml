@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingHorizontal="50dp">
 
     <TextView
@@ -23,24 +23,36 @@
         android:id="@+id/tv_answer_yes"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/bg_for_answer_def"
         android:gravity="center"
+        android:textColor="@color/btn_answer_def"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_question"
+        app:layout_constraintBottom_toTopOf="@id/tv_answer_no"
         tools:text="Yes" />
 
     <TextView
         android:id="@+id/tv_answer_no"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="160dp"
         android:background="@drawable/bg_for_answer_def"
         android:gravity="center"
+        android:textColor="@color/btn_answer_def"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_answer_yes"
+        app:layout_constraintBottom_toTopOf="@id/btn_skip"
         tools:text="No" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:text="@string/skip"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

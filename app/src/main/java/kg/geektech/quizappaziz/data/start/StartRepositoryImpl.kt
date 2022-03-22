@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class StartRepositoryImpl @Inject constructor(private val mainApi: StartApi) : StartRepository {
+class StartRepositoryImpl @Inject constructor(private val startApi: StartApi) : StartRepository {
 
     override suspend fun getCategoryList(): Flow<List<CategoryEntity>> {
         return flow {
-            val response = mainApi.getCategoryList()
+            val response = startApi.getCategoryList()
             if (response.isSuccessful) {
                 val body = response.body()
                 body?.triviaCategories?.let {

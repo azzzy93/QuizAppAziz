@@ -3,7 +3,6 @@ package kg.geektech.quizappaziz.presentation.start
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -11,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.R
-import kg.geektech.quizappaziz.databinding.FragmentStartBinding
 import kg.geektech.quizappaziz.core.BaseFragment
+import kg.geektech.quizappaziz.databinding.FragmentStartBinding
 import kg.geektech.quizappaziz.domain.start.entity.CategoryEntity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -45,12 +44,14 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     private fun openGameFragment() {
         val category = binding.spinnerCategory.selectedItem as CategoryEntity
         val categoryId = category.id
+        val categoryName = category.name
         val questionAmount = binding.tvQuestionsAmountValue.text.toString().toInt()
         val difficulty = binding.spinnerDifficulty.selectedItem.toString().lowercase()
 
         val bundle = Bundle()
         bundle.apply {
             putInt(CATEGORY_ID, categoryId)
+            putString(CATEGORY_NAME, categoryName)
             putInt(QUESTIONS_AMOUNT, questionAmount)
             putString(DIFFICULTY, difficulty)
         }
@@ -108,6 +109,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
 
     companion object {
         const val CATEGORY_ID = "CATEGORY_ID"
+        const val CATEGORY_NAME = "CATEGORY_NAME"
         const val QUESTIONS_AMOUNT = "QUESTIONS_AMOUNT"
         const val DIFFICULTY = "DIFFICULTY"
     }

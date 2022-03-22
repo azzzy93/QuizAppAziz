@@ -1,8 +1,6 @@
 package kg.geektech.quizappaziz.presentation.game
 
-import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -14,60 +12,61 @@ import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.core.BaseFragment
 import kg.geektech.quizappaziz.databinding.FragmentGameBinding
 import kg.geektech.quizappaziz.presentation.start.StartFragment
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameFragment : BaseFragment<FragmentGameBinding>() {
 
-    private var maxCount = 0
-    private var categoryId = 0
+    private var questionAmount = 1
+    private var categoryId = -1
     private var difficulty = ""
-    private var currentCount = 1
-    private lateinit var adapter: GameAdapter
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initAdapter()
-    }
-
-    private fun initAdapter() {
-        adapter = GameAdapter()
-        binding.rvGame.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = this@GameFragment.adapter
-        }
-    }
-
     private val viewModel: GameViewModel by viewModels()
+    private val adapter: GameAdapter by lazy {
+        GameAdapter()
+    }
 
     override fun bind(): FragmentGameBinding {
         return FragmentGameBinding.inflate(layoutInflater)
     }
 
     override fun setupListeners() {
+        adapter.onItemClick = {
+            if (adapter.currentList.size-1 > it) {
+                lifecycleScope.launch {
+                    delay(2000)
+                    binding.rvGame.layoutManager?.scrollToPosition(1 + it)
+                    changeProgress(2 + it)
+                }
+            }
+        }
     }
 
     override fun setupObservers() {
         if (categoryId == -1 && difficulty != "any difficulty") {
-            viewModel.fetchQsts(amount = maxCount, difficulty = difficulty)
+            viewModel.fetchQsts(amount = questionAmount, difficulty = difficulty)
             Log.e("Aziz", "without category")
         } else if (difficulty == "any difficulty" && categoryId != -1) {
-            viewModel.fetchQsts(amount = maxCount, categoryId = categoryId)
+            viewModel.fetchQsts(amount = questionAmount, categoryId = categoryId)
             Log.e("Aziz", "without difficulty")
         } else if (categoryId == -1 && difficulty == "any difficulty") {
-            viewModel.fetchQsts(amount = maxCount)
+            viewModel.fetchQsts(amount = questionAmount)
             Log.e("Aziz", "without category and difficulty")
         } else {
-            viewModel.fetchQsts(amount = maxCount, categoryId = categoryId, difficulty = difficulty)
+            viewModel.fetchQsts(
+                amount = questionAmount,
+                categoryId = categoryId,
+                difficulty = difficulty
+            )
             Log.e("Aziz", "with ALL")
         }
 
         viewModel.qstsList.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             adapter.submitList(it)
         }.launchIn(lifecycleScope)
+
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             handleState(it)
         }.launchIn(lifecycleScope)
@@ -88,18 +87,34 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
 
     override fun setupUi() {
         if (arguments != null) {
-            maxCount = requireArguments().getInt(StartFragment.QUESTIONS_AMOUNT)
             categoryId = requireArguments().getInt(StartFragment.CATEGORY_ID)
-            difficulty = requireArguments().getString(StartFragment.DIFFICULTY)!!
+            requireArguments().getString(StartFragment.CATEGORY_NAME)?.let {
+                requireActivity().title = it
+            }
+            questionAmount = requireArguments().getInt(StartFragment.QUESTIONS_AMOUNT)
+            requireArguments().getString(StartFragment.DIFFICULTY)?.let {
+                difficulty = it
+            }
         }
-        changeProgress()
+        changeProgress(1)
+        initRv()
     }
 
-    private fun changeProgress() {
-        val count = "$currentCount/$maxCount"
+    private fun initRv() {
+        binding.rvGame.apply {
+            layoutManager = object : LinearLayoutManager(requireContext(), HORIZONTAL, false) {
+                override fun canScrollHorizontally(): Boolean {
+                    return false
+                }
+            }
+            adapter = this@GameFragment.adapter
+        }
+    }
+
+    private fun changeProgress(currentCount: Int) {
+        val count = "$currentCount/$questionAmount"
         binding.tvProgressCounter.text = count
-        binding.progressLinear.max = maxCount
+        binding.progressLinear.max = questionAmount
         binding.progressLinear.progress = currentCount
     }
-
 }

@@ -23,8 +23,8 @@ class StartModule {
 
     @Singleton
     @Provides
-    fun provideStartRepository(mainApi: StartApi): StartRepository {
-        return StartRepositoryImpl(mainApi)
+    fun provideStartRepository(startApi: StartApi): StartRepository {
+        return StartRepositoryImpl(startApi)
     }
 
 }
