@@ -10,14 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.quizappaziz.R
 import kg.geektech.quizappaziz.core.BaseFragment
 import kg.geektech.quizappaziz.databinding.FragmentGameBinding
-import kg.geektech.quizappaziz.presentation.start.StartFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,6 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class GameFragment : BaseFragment<FragmentGameBinding>() {
 
+    private val args: GameFragmentArgs by navArgs()
     private var questionAmount = 1
     private var categoryId = -1
     private var categoryName = ""
@@ -65,17 +64,17 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
     }
 
     private fun openResultFragment() {
-        val bundle = Bundle()
         val correctAnswers = "$correctAnswer/$questionAmount"
         val resultPercent: Double = (correctAnswer.toDouble() / questionAmount.toDouble()) * 100
         val result = "${resultPercent.toInt()}%"
-        bundle.apply {
-            putString(CATEGORY_NAME, categoryName)
-            putString(DIFFICULTY, difficulty)
-            putString(CORRECT_ANSWERS, correctAnswers)
-            putString(RESULT, result)
-        }
-        navigateFragment(R.id.action_gameFragment_to_resultFragment, bundle)
+
+        val action = GameFragmentDirections.actionGameFragmentToResultFragment(
+            categoryName,
+            difficulty,
+            correctAnswers,
+            result
+        )
+        navController.navigate(action)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -134,17 +133,13 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
     }
 
     override fun setupUi() {
-        if (arguments != null) {
-            categoryId = requireArguments().getInt(StartFragment.CATEGORY_ID)
-            requireArguments().getString(StartFragment.CATEGORY_NAME)?.let {
-                categoryName = it
-                requireActivity().title = categoryName
-            }
-            questionAmount = requireArguments().getInt(StartFragment.QUESTIONS_AMOUNT)
-            requireArguments().getString(StartFragment.DIFFICULTY)?.let {
-                difficulty = it
-            }
-        }
+        categoryId = args.categoryId
+        categoryName = args.categoryName
+        questionAmount = args.questionsAmount
+        difficulty = args.difficulty
+
+        requireActivity().title = categoryName
+
         initRv()
     }
 
@@ -157,12 +152,5 @@ class GameFragment : BaseFragment<FragmentGameBinding>() {
             }
             adapter = this@GameFragment.adapter
         }
-    }
-
-    companion object {
-        const val CATEGORY_NAME = "CATEGORY_NAME"
-        const val DIFFICULTY = "DIFFICULTY"
-        const val CORRECT_ANSWERS = "CORRECT_ANSWERS"
-        const val RESULT = "RESULT"
     }
 }

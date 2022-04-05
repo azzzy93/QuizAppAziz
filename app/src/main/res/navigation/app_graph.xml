@@ -34,7 +34,20 @@
         tools:layout="@layout/fragment_game">
         <action
             android:id="@+id/action_gameFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/app_graph" />
+        <argument
+            android:name="category_id"
+            app:argType="integer" />
+        <argument
+            android:name="category_name"
+            app:argType="string" />
+        <argument
+            android:name="questions_amount"
+            app:argType="integer" />
+        <argument
+            android:name="difficulty"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -44,7 +57,18 @@
         tools:layout="@layout/fragment_result">
         <action
             android:id="@+id/action_resultFragment_to_startFragment"
-            app:destination="@id/startFragment" />
+            app:destination="@id/startFragment"
+            app:popUpTo="@id/app_graph" />
+        <argument
+            android:name="category_name"
+            app:argType="string" />
+        <argument
+            android:name="difficulty"
+            app:argType="string" />
+        <argument android:name="correct_answers" />
+        <argument
+            android:name="result"
+            app:argType="string" />
     </fragment>
 
 </navigation>

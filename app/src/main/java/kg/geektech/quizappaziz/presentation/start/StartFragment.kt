@@ -1,8 +1,5 @@
 package kg.geektech.quizappaziz.presentation.start
 
-import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Spinner
@@ -51,15 +48,13 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
         val questionAmount = binding.tvQuestionsAmountValue.text.toString().toInt()
         val difficulty = binding.spinnerDifficulty.selectedItem.toString().lowercase()
 
-        val bundle = Bundle()
-        bundle.apply {
-            putInt(CATEGORY_ID, categoryId)
-            putString(CATEGORY_NAME, categoryName)
-            putInt(QUESTIONS_AMOUNT, questionAmount)
-            putString(DIFFICULTY, difficulty)
-        }
-
-        navigateFragment(R.id.action_startFragment_to_gameFragment, bundle)
+        val action = StartFragmentDirections.actionStartFragmentToGameFragment(
+            categoryId,
+            categoryName,
+            questionAmount,
+            difficulty
+        )
+        navController.navigate(action)
     }
 
     override fun setupObservers() {
@@ -96,12 +91,5 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
             )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-    }
-
-    companion object {
-        const val CATEGORY_ID = "CATEGORY_ID"
-        const val CATEGORY_NAME = "CATEGORY_NAME"
-        const val QUESTIONS_AMOUNT = "QUESTIONS_AMOUNT"
-        const val DIFFICULTY = "DIFFICULTY"
     }
 }

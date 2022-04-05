@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
 import kg.geektech.quizappaziz.R
@@ -13,6 +14,9 @@ abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
 
     protected lateinit var binding: VB
     protected abstract fun bind(): VB
+    protected val navController: NavController by lazy {
+        Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +25,7 @@ abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
     ): View? {
         binding = bind()
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,16 +41,4 @@ abstract class BaseFragment<VB : ViewBinding>() : Fragment() {
     open fun setupObservers() {}
 
     open fun setupUi() {}
-
-    protected fun navigateFragment(fragmentId: Int? = null, bundle: Bundle? = null) {
-        val navController =
-            Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
-        if (fragmentId != null && bundle != null) {
-            navController.navigate(fragmentId, bundle)
-        } else if (fragmentId != null && bundle == null) {
-            navController.navigate(fragmentId)
-        } else {
-            navController.navigateUp()
-        }
-    }
 }
